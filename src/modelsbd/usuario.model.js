@@ -36,6 +36,7 @@ const PersonSchema = {
 Person.associate = (models) => {
     // Corrige la asociación para usar el modelo correcto (Person en lugar de User)
     Person.hasMany(models.Vuelos, { foreignKey: 'correo' });
+    Person.hasMany(models.Solix, { foreignKey: 'correosa' });
 };
 
 module.exports = {Person, PersonSchema};
