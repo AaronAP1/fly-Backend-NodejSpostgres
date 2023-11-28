@@ -6,7 +6,9 @@ class vuelosService {
     constructor() {}
 
     async find() {
-      const res = await models.vueloss.findAll();
+      const res = await models.vueloss.findAll({
+        order: [['id', 'DESC']],
+      });
       return res;
     }
 
@@ -30,6 +32,31 @@ class vuelosService {
       const model = await this.findOne(id);
       await model.destroy();
       return { deleted: true };
+    }
+    async findLastByCorreo(correo) {
+      const res = await models.vueloss.findAll({
+        where: { correo: correo },
+        order: [['fecha', 'DESC']], // Ordenar por fecha de forma descendente
+        limit: 1, // Obtener solo el primer resultado
+      });
+      return res;
+    }
+
+    async findSecondLastByCorreo(correo) {
+      const res = await models.vueloss.findAll({
+        where: { correo: correo },
+        order: [['fecha', 'DESC']],
+        limit: 2,
+      });
+    
+      // Verificar si hay al menos dos resultados
+      if (res.length >= 2) {
+        // Devolver el segundo elemento en la lista (el penúltimo vuelo)
+        return [res[1].toJSON()];
+      } else {
+        // En este caso, hay menos de dos resultados, devolver un array vacío o un mensaje indicando que no hay suficientes vuelos
+        return [];
+      }
     }
 
     async listarVuelosPorCorreo(correo) {

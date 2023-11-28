@@ -30,6 +30,16 @@ const create = async (req, res) => {
     }
 };
 
+const getLastByCorreo = async (req, res) => {
+    try {
+      const { correo } = req.params;
+      const response = await service.findLastByCorreo(correo);
+      res.json(response);
+    } catch (error) {
+      res.status(500).send({ success: false, message: error.message });
+    }
+  };
+
 const get = async ( req, res ) => {
     try {
         const response = await service.find();
@@ -79,8 +89,16 @@ const listarVuelosPorCorreo = async (req, res) => {
       res.status(500).json({ success: false, message: error.message });
     }
   };
-  
+  const getSecondLastByCorreo = async (req, res) => {
+    try {
+      const { correo } = req.params;
+      const response = await service.findSecondLastByCorreo(correo);
+      res.json(response);
+    } catch (error) {
+      res.status(500).send({ success: false, message: error.message });
+    }
+  }; 
 
 module.exports = {
-    create, get, getById, update, _delete, listarVuelosPorCorreo
+    create, get, getById, update, _delete, listarVuelosPorCorreo, getLastByCorreo, getSecondLastByCorreo
 };
